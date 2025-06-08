@@ -16,7 +16,6 @@ const App = () => {
     checkAuth();
   }, [checkAuth]);
 
-  console.log({ authUser });
 
   if (isCheckingAuth && !authUser) {
     return (
@@ -27,7 +26,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div data-theme="retro">
       <Navbar />
       <Routes>
         <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login"/>} />

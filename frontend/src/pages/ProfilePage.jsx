@@ -103,7 +103,7 @@ const ProfilePage = () => {
                   }}
                 >
                   {form ? (
-                    <Check className="text-green-300 size-6" />
+                    <span className="text-green-300 size-6" >Save</span>
                   ) : (
                     <Edit className="text-zinc-300 size-6" />
                   )}
