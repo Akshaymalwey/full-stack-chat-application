@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useChatStore } from "../store/useChatStore.js";
 import { useAuthStore } from "../store/useAuthStore.js";
 import SideBarSkeleton from "./skeletons/SideBarSkeleton.jsx";
@@ -11,6 +11,10 @@ const SideBar = () => {
     getUsers();
   }, [getUsers]);
 
+  const [showOnlineUsers, setShowOnlineUsers] = useState(false);
+
+  const filteredUsers = showOnlineUsers ? users.filter(user => onlineUsers.includes(user._id)) : users;
+
   if (isUserLoading) return <SideBarSkeleton />;
 
   return (
@@ -20,8 +24,20 @@ const SideBar = () => {
         <span className="font-medium hidden lg:block">Contacts</span>
       </div>
 
+      <div className="mt-3 hidden lg:flex items-center gap-2">
+        <label className="cursor-pointer flex items-center gap-2">
+          <input type="checkbox"
+          checked={showOnlineUsers}
+          onChange={(e)=> setShowOnlineUsers(e.target.checked)}
+          className="checkbox checkbox-sm"
+          />
+          <span className="text-sm">Show Online Only</span>
+        </label>
+        <span className="text-xs text-zinc-500">({onlineUsers.length - 1} online)</span>
+      </div>
+
       <div className="overflow-y-auto w-full py-3">
-        {users.map((user) => (
+        {filteredUsers.map((user) => (
           <button
             key={user._id}
             onClick={() => setSelectedUsers(user)}
@@ -50,6 +66,10 @@ const SideBar = () => {
             </div>
           </button>
         ))}
+
+        {filteredUsers.length === 0 && (
+          <div className="text-center text-zinc-500 py-4">No Online Users</div>
+        )}
       </div>
     </aside>
   );
